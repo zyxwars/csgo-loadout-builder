@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchSkins = createAsyncThunk("skins/fetchSkins", async () => {
-  const res = await axios.get(
-    "http://csgobackpack.net/api/GetItemsList/v2/?currency=eur"
-  );
+  const res = await axios
+    .get("http://csgobackpack.net/api/GetItemsList/v2/?currency=eur")
+    .catch((err) => {
+      console.log(err);
+    });
 
   const itemsList = Object.values(res.data["items_list"]);
 

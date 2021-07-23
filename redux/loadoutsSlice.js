@@ -24,7 +24,11 @@ export const loadoutsSlice = createSlice({
     createLoadout(state, { payload }) {
       const id = uuidv4();
 
-      state.loadouts.push({ id, ...payload });
+      state.loadouts.push({
+        id,
+        name: payload.name.length > 1 ? payload.name : "Loadout",
+        ...payload,
+      });
       AsyncStorage.setItem("loadouts", JSON.stringify(state.loadouts));
       AsyncStorage.setItem(id, JSON.stringify(loadoutModel));
     },
