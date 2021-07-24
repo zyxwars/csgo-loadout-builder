@@ -66,6 +66,7 @@ export default function Home({ navigation }) {
           placeholder="Name..."
           placeholderTextColor="white"
           onChangeText={setLoadoutName}
+          value={loadoutName}
         />
         <TouchableOpacity
           style={{
@@ -77,7 +78,7 @@ export default function Home({ navigation }) {
             backgroundColor: "white",
           }}
           onPress={() => {
-            dispatch(createLoadout({ name: loadoutName }));
+            dispatch(createLoadout(loadout));
             setLoadoutName("");
           }}
         >

@@ -5,3 +5,4 @@ Group same skin with different exterior together
 Save skins offline
 Error handling
 Change styling
+Loadout layout style toggle => lines, grid

@@ -162,6 +162,21 @@ export const loadoutDetailSlice = createSlice({
       }
 
       state.price = price;
+
+      // Not tested
+      // state.price = state.types.reduce((totalPrice, type) => {
+      //   return (
+      //     totalPrice +
+      //     type.weapons.reduce((totalPrice, weapon) => {
+      //       if (weapon?.skin?.price["24_hours"])
+      //         return totalPrice + weapon.skin.price["24_hours"].average;
+      //       if (weapon?.skin?.price["30_days"])
+      //         return totalPrice + weapon.skin.price["30_days"].average;
+      //       if (weapon?.skin?.price["all_time"])
+      //         return totalPrice + weapon.skin.price["all_time"].average;
+      //     }, 0)
+      //   );
+      // }, 0);
     },
     showSkinDetail(state, { payload }) {
       state.skinDetail = payload;
