@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { validatePrice } from "../utils/validators";
+
 export const loadoutModel = [
   {
     name: "Pistol",
@@ -93,7 +95,7 @@ export const fetchLoadout = createAsyncThunk(
   async (idLoadout) => {
     const loadout = await AsyncStorage.getItem(idLoadout);
 
-    if (!loadout) return { id: idLoadout, tyeps: loadoutModel };
+    if (!loadout) return { id: idLoadout, types: loadoutModel };
 
     return { id: idLoadout, types: JSON.parse(loadout) };
   }
@@ -151,32 +153,11 @@ export const loadoutDetailSlice = createSlice({
 
       for (const type of state.types) {
         for (const weapon of type.weapons) {
-          if (weapon?.skin?.price["24_hours"]) {
-            price += weapon.skin.price["24_hours"].average;
-          } else if (weapon?.skin?.price["30_days"]) {
-            price += weapon.skin.price["30_days"].average;
-          } else if (weapon?.skin?.price["all_time"]) {
-            price += weapon.skin.price["all_time"].average;
-          }
+          price += validatePrice(weapon?.skin?.price);
         }
       }
 
       state.price = price;
-
-      // Not tested
-      // state.price = state.types.reduce((totalPrice, type) => {
-      //   return (
-      //     totalPrice +
-      //     type.weapons.reduce((totalPrice, weapon) => {
-      //       if (weapon?.skin?.price["24_hours"])
-      //         return totalPrice + weapon.skin.price["24_hours"].average;
-      //       if (weapon?.skin?.price["30_days"])
-      //         return totalPrice + weapon.skin.price["30_days"].average;
-      //       if (weapon?.skin?.price["all_time"])
-      //         return totalPrice + weapon.skin.price["all_time"].average;
-      //     }, 0)
-      //   );
-      // }, 0);
     },
     showSkinDetail(state, { payload }) {
       state.skinDetail = payload;

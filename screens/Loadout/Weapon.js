@@ -4,6 +4,7 @@ import { Foundation } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 
 import { showSkinDetail } from "../../redux/loadoutDetailSlice";
+import { validatePrice } from "../../utils/validators";
 
 export default function Weapon({ navigation, weapon }) {
   const dispatch = useDispatch();
@@ -31,13 +32,7 @@ export default function Weapon({ navigation, weapon }) {
               }}
             />
             <Text style={styles.weaponName}>
-              {weapon.skin.name} |{" "}
-              {weapon.skin.price["24_hours"]
-                ? `${weapon.skin.price["24_hours"].average}`
-                : weapon.skin.price["30_days"]
-                ? weapon.skin.price["30_days"].average
-                : weapon.skin.price.all_time.average}
-              €
+              {weapon.skin.name} | {validatePrice(weapon.skin.price)}€
             </Text>
           </TouchableOpacity>
         ) : (

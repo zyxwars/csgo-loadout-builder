@@ -78,7 +78,7 @@ export default function Home({ navigation }) {
             backgroundColor: "white",
           }}
           onPress={() => {
-            dispatch(createLoadout(loadout));
+            dispatch(createLoadout({ name: loadoutName }));
             setLoadoutName("");
           }}
         >
