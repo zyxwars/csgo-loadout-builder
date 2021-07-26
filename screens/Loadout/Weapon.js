@@ -5,46 +5,39 @@ import { useDispatch } from "react-redux";
 
 import { showSkinDetail } from "../../redux/loadoutDetailSlice";
 import { validatePrice } from "../../utils/validators";
+import SkinTile from "../../components/SkinTile";
+import { defaultTheme as theme } from "../../theme";
+import { ThemeProvider } from "@react-navigation/native";
 
 export default function Weapon({ navigation, weapon }) {
   const dispatch = useDispatch();
 
   return (
     <>
-      <View
-        style={{
-          width: containerSize,
-          height: containerSize,
-          marginHorizontal: 4,
+      {weapon.skin ? (
+        <SkinTile
+          skin={weapon.skin}
+          onPress={() => dispatch(showSkinDetail(weapon.skin))}
+        />
+      ) : (
+        <TouchableOpacity
+          style={{
+            width: 160,
+            height: 160,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: 16,
+            marginRight: 8,
 
-          backgroundColor: "#000000",
-        }}
-      >
-        {weapon.skin ? (
-          <TouchableOpacity
-            style={styles.weaponImageContainer}
-            onPress={() => dispatch(showSkinDetail(weapon.skin))}
-          >
-            <Image
-              style={{ width: 150, height: 100 }}
-              source={{
-                uri: `https://steamcommunity-a.akamaihd.net/economy/image/${weapon.skin.icon_url}`,
-              }}
-            />
-            <Text style={styles.weaponName}>
-              {weapon.skin.name} | {validatePrice(weapon.skin.price)}€
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={styles.weaponImageContainer}
-            onPress={() => navigation.push("Skins", { gunType: weapon.name })}
-          >
-            <Foundation name="plus" color="#151518" size={100} />
-            <Text style={styles.weaponName}>{weapon.name}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+            backgroundColor: theme.secondBackgroundColor,
+          }}
+          onPress={() => navigation.push("Skins", { gunType: weapon.name })}
+        >
+          <Foundation name="plus" color={theme.backgroundColor} size={100} />
+
+          <Text style={styles.weaponName}>{weapon.name}</Text>
+        </TouchableOpacity>
+      )}
     </>
   );
 }
@@ -68,7 +61,7 @@ const styles = StyleSheet.create({
     right: 0,
     textAlign: "center",
 
-    color: "white",
+    color: theme.secondAccentColor,
     fontFamily: "roboto-thin",
     fontSize: 16,
   },

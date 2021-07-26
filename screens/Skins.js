@@ -12,8 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { fetchSkins } from "../redux/skinsSlice";
 import { addSkin } from "../redux/loadoutDetailSlice";
-import { validatePrice, stripName } from "../utils/validators";
+import { stripName } from "../utils/validators";
 import { orderByExterior } from "../utils/helpers";
+import CustomTextInput from "../components/CustomTextInput";
+import SkinTile from "../components/SkinTile";
+import SkinRow from "../components/SkinRow";
+import { defaultTheme as theme } from "../theme";
 
 export default function Skins({ route, navigation }) {
   const dispatch = useDispatch();
@@ -21,6 +25,7 @@ export default function Skins({ route, navigation }) {
   const { gunType } = route.params;
   const skins = useSelector((state) => state.skins);
   const [groupedSkins, setGroupedSkins] = useState(null);
+  const [searchFilter, setSearchFilter] = useState("");
 
   useEffect(() => {
     if (skins.skins.length > 0) return;
@@ -56,64 +61,35 @@ export default function Skins({ route, navigation }) {
     setGroupedSkins(groupedSkins);
   }, [skins]);
 
-  const renderItem2 = ({ item }) => (
-    <View
-      style={{
-        width: containerSize,
-        height: containerSize,
-        marginHorizontal: 4,
-
-        backgroundColor: "#000000",
-      }}
-    >
-      <TouchableOpacity
-        style={styles.weaponImageContainer}
-        onPress={() => {
-          dispatch(addSkin(item));
-          navigation.goBack();
-        }}
-      >
-        <Image
-          style={{ width: 150, height: 100 }}
-          source={{
-            uri: `https://steamcommunity-a.akamaihd.net/economy/image/${item.icon_url}`,
-          }}
-        />
-        <Text style={styles.weaponName}>
-          {item.name} | {validatePrice(item.price)}€
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderItem = ({ item }) => (
-    <>
-      <Text
-        style={{
-          fontSize: 24,
-          fontFamily: "roboto-thin",
-          color: "white",
-          textAlign: "center",
-        }}
-      >
-        {item.name}
-      </Text>
-      <FlatList
-        horizontal={true}
-        data={orderByExterior(item.skins)}
-        renderItem={renderItem2}
-        keyExtractor={(item) => item.name}
-      />
-    </>
-  );
-
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
+      <CustomTextInput
+        style={{ backgroundColor: "black" }}
+        placeholder="Search..."
+        value={searchFilter}
+        onChangeText={setSearchFilter}
+      />
+
       {skins.status === "fulfilled" && groupedSkins ? (
         <FlatList
-          style={{ backgroundColor: "#151518" }}
-          data={groupedSkins}
-          renderItem={renderItem}
+          data={groupedSkins.filter((skinGroup) =>
+            skinGroup.name.toLowerCase().includes(searchFilter.toLowerCase())
+          )}
+          renderItem={({ item }) => (
+            <SkinRow
+              rowName={item.name}
+              childrenData={orderByExterior(item.skins)}
+              childRenderItem={({ item }) => (
+                <SkinTile
+                  skin={item}
+                  onPress={() => {
+                    dispatch(addSkin(item));
+                    navigation.goBack();
+                  }}
+                />
+              )}
+            />
+          )}
           keyExtractor={(item) => item.name}
         />
       ) : (
@@ -121,38 +97,11 @@ export default function Skins({ route, navigation }) {
           style={{
             flex: 1,
             justifyContent: "center",
-
-            backgroundColor: "#151518",
           }}
         >
           <ActivityIndicator size={80} color="black" />
         </View>
       )}
-    </>
+    </View>
   );
 }
-
-const containerSize = 175;
-
-const styles = StyleSheet.create({
-  weaponImageContainer: {
-    width: containerSize,
-    height: containerSize,
-
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  weaponName: {
-    position: "absolute",
-    bottom: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    left: 0,
-    right: 0,
-    textAlign: "center",
-
-    color: "white",
-    fontFamily: "roboto-thin",
-    fontSize: 16,
-  },
-});

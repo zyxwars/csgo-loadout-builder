@@ -13,10 +13,13 @@ import { store } from "./redux/store";
 import Home from "./screens/Home";
 import Loadout from "./screens/Loadout/Loadout";
 import Skins from "./screens/Skins";
+import { defaultTheme as theme } from "./theme";
 
 const getFonts = () =>
   Font.loadAsync({
     "roboto-thin": require("./assets/fonts/Roboto-Thin.ttf"),
+    "roboto-light": require("./assets/fonts/Roboto-Light.ttf"),
+    "roboto-regular": require("./assets/fonts/Roboto-Regular.ttf"),
   });
 
 const Stack = createStackNavigator();
@@ -32,11 +35,11 @@ export default function App() {
             initialRouteName="Home"
             screenOptions={{
               headerStyle: {
-                backgroundColor: "black",
+                backgroundColor: theme.navigationColor,
               },
-              headerTintColor: "white",
+              headerTintColor: theme.secondAccentColor,
               headerTitleStyle: {
-                fontFamily: "roboto-thin",
+                fontFamily: "roboto-light",
               },
               headerTitleAlign: "center",
             }}
@@ -62,8 +65,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+
+    backgroundColor: "#fff",
   },
 });

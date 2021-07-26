@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  Modal,
-  Button,
-  Text,
-  Image,
-} from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -17,7 +9,10 @@ import {
   hideSkinDetail,
   removeSkin,
 } from "../../redux/loadoutDetailSlice";
-import Type from "./Type";
+import { defaultTheme as theme } from "../../theme";
+import SkinDetail from "../../components/SkinDetail";
+import SkinRow from "../../components/SkinRow";
+import Weapon from "./Weapon";
 
 export default function Loadout({ route, navigation }) {
   const dispatch = useDispatch();
@@ -25,14 +20,8 @@ export default function Loadout({ route, navigation }) {
   const { idLoadout, loadoutName } = route.params;
   const loadout = useSelector((state) => state.loadout);
 
-  const renderItem = ({ item }) => <Type navigation={navigation} type={item} />;
-
   useEffect(() => {
     dispatch(fetchLoadout(idLoadout));
-  }, []);
-
-  useEffect(() => {
-    navigation.setOptions({ title: loadoutName });
   }, [idLoadout]);
 
   useEffect(() => {
@@ -40,7 +29,6 @@ export default function Loadout({ route, navigation }) {
       navigation.setOptions({ title: "Loading..." });
       return;
     }
-
     dispatch(calculatePrice());
     navigation.setOptions({
       title: `${loadoutName} - ${loadout.price.toFixed(2)}€`,
@@ -51,58 +39,37 @@ export default function Loadout({ route, navigation }) {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#151518",
+        backgroundColor: theme.backgroundColor,
       }}
     >
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={loadout.skinDetail != null}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            style={{ width: 300, height: 200 }}
-            source={{
-              uri: `https://steamcommunity-a.akamaihd.net/economy/image/${loadout?.skinDetail?.icon_url_large}`,
-            }}
-          />
-          <Text
-            style={{ color: "white", fontSize: 16, fontFamily: "roboto-thin" }}
-          >
-            {loadout?.skinDetail?.name}
-          </Text>
-          <Button
-            title="Change"
-            onPress={() => {
-              dispatch(hideSkinDetail());
-
-              navigation.push("Skins", {
-                gunType: loadout?.skinDetail?.gun_type,
-              });
-            }}
-          />
-          <Button
-            title="Remove"
-            onPress={() => {
-              dispatch(removeSkin(loadout?.skinDetail));
-              dispatch(hideSkinDetail());
-            }}
-          />
-          <Button title="Close" onPress={() => dispatch(hideSkinDetail())} />
-        </View>
-      </Modal>
+      <SkinDetail
+        skin={loadout.skinDetail}
+        closeModalCallback={() => dispatch(hideSkinDetail())}
+        sellSkinCallback={() => {
+          dispatch(removeSkin(loadout?.skinDetail));
+          dispatch(hideSkinDetail());
+        }}
+        changeSkinCallback={() => {
+          dispatch(hideSkinDetail());
+          navigation.push("Skins", {
+            gunType: loadout?.skinDetail?.gun_type,
+          });
+        }}
+      />
 
       {loadout.status === "fulfilled" ? (
         <>
           <FlatList
             data={loadout.types}
-            renderItem={renderItem}
+            renderItem={({ item }) => (
+              <SkinRow
+                rowName={item.name}
+                childrenData={item.weapons}
+                childRenderItem={({ item }) => (
+                  <Weapon navigation={navigation} weapon={item} />
+                )}
+              />
+            )}
             keyExtractor={(item) => item.name}
           />
         </>
