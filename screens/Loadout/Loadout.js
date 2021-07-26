@@ -52,7 +52,7 @@ export default function Loadout({ route, navigation }) {
         changeSkinCallback={() => {
           dispatch(hideSkinDetail());
           navigation.push("Skins", {
-            gunType: loadout?.skinDetail?.gun_type,
+            weaponType: loadout?.skinDetail?.gun_type,
           });
         }}
       />

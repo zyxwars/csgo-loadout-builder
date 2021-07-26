@@ -60,7 +60,7 @@ export const loadoutModel = [
     ],
   },
   {
-    name: "Melee",
+    name: "Knife",
     weapons: [
       { name: "Terrorist knife", skin: null },
       { name: "Counter-terrorist knife", skin: null },

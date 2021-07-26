@@ -22,7 +22,7 @@ import { defaultTheme as theme } from "../theme";
 export default function Skins({ route, navigation }) {
   const dispatch = useDispatch();
 
-  const { gunType } = route.params;
+  const { weaponType } = route.params;
   const skins = useSelector((state) => state.skins);
   const [groupedSkins, setGroupedSkins] = useState(null);
   const [searchFilter, setSearchFilter] = useState("");
@@ -34,17 +34,41 @@ export default function Skins({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    const filteredSkins = skins.skins.filter(
-      (skin) => skin.gun_type === gunType
-    );
+    const filteredSkins = skins.skins.filter((skin) => {
+      if (
+        weaponType === "Terrorist gloves" ||
+        weaponType === "Counter-terrorist gloves"
+      )
+        return skin.type === "Gloves";
+      if (
+        weaponType === "Terrorist knife" ||
+        weaponType === "Counter-terrorist knife"
+      )
+        return skin.weapon_type === "Knife";
+      // Temporary fix until csgobackpack updates api
+      if (
+        weaponType === "Terrorist agent" ||
+        weaponType === "Counter-terrorist agent"
+      )
+        return (
+          skin.type == null &&
+          !skin.name.includes("Patch") &&
+          !skin.name.includes("Sticker") &&
+          !skin.name.includes("Operation") &&
+          skin.name !== "Swap Tool" &&
+          skin.name !== "Name Tag"
+        );
+
+      return skin.gun_type === weaponType;
+    });
 
     const groupedSkins = filteredSkins.reduce((groupedSkins, skin) => {
       const cleanedName = stripName(skin.name);
 
       search: {
-        for (skinGroup of groupedSkins) {
-          if (skinGroup.name === cleanedName) {
-            skinGroup.skins.push(skin);
+        for (banana of groupedSkins) {
+          if (banana.name === cleanedName) {
+            banana.skins.push(skin);
             break search;
           }
         }
@@ -72,8 +96,8 @@ export default function Skins({ route, navigation }) {
 
       {skins.status === "fulfilled" && groupedSkins ? (
         <FlatList
-          data={groupedSkins.filter((skinGroup) =>
-            skinGroup.name.toLowerCase().includes(searchFilter.toLowerCase())
+          data={groupedSkins.filter((milk) =>
+            milk.name.toLowerCase().includes(searchFilter.toLowerCase())
           )}
           renderItem={({ item }) => (
             <SkinRow
@@ -83,7 +107,22 @@ export default function Skins({ route, navigation }) {
                 <SkinTile
                   skin={item}
                   onPress={() => {
-                    dispatch(addSkin(item));
+                    dispatch(
+                      addSkin({
+                        ...item,
+                        ...(item.type === "Gloves" && {
+                          weapon_type: "Gloves",
+                          gun_type: weaponType,
+                        }),
+                        ...(item.weapon_type === "Knife" && {
+                          gun_type: weaponType,
+                        }),
+                        ...(item.weapon_type == null && {
+                          weapon_type: "Agent",
+                          gun_type: weaponType,
+                        }),
+                      })
+                    );
                     navigation.goBack();
                   }}
                 />

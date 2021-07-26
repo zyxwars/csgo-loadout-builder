@@ -31,7 +31,7 @@ export default function Weapon({ navigation, weapon }) {
 
             backgroundColor: theme.secondBackgroundColor,
           }}
-          onPress={() => navigation.push("Skins", { gunType: weapon.name })}
+          onPress={() => navigation.push("Skins", { weaponType: weapon.name })}
         >
           <Foundation name="plus" color={theme.backgroundColor} size={100} />
 
