@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     right: 0,
     textAlign: "center",
 
-    color: theme.secondAccentColor,
+    color: theme.accentColor,
     fontFamily: "roboto-thin",
     fontSize: 16,
   },

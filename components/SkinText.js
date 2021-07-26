@@ -8,7 +8,7 @@ export default function SkinText({ style, skin }) {
   return (
     <Text
       style={{
-        color: theme.secondAccentColor,
+        color: theme.accentColor,
         fontFamily: "roboto-light",
         textAlign: "center",
         ...style,

@@ -19,7 +19,7 @@ export default function CustomButton({ style, textStyle, text, onPress }) {
       <Text
         style={{
           textAlign: "center",
-          color: theme.secondAccentColor,
+          color: theme.accentColor,
           fontFamily: "roboto-light",
           fontSize: 16,
 

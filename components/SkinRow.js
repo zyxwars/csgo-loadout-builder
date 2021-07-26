@@ -11,7 +11,7 @@ export default function SkinRow({ rowName, childrenData, childRenderItem }) {
           marginTop: 4,
           marginBottom: 4,
           textAlign: "center",
-          color: theme.secondAccentColor,
+          color: theme.accentColor,
           fontFamily: "roboto-thin",
           fontSize: 24,
         }}

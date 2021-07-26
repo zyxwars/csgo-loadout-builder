@@ -6,7 +6,6 @@ export const defaultTheme = {
   // navigationColor: "#EE6C4D",
   backgroundColor: "hsl(235, 21%, 21%)",
   secondBackgroundColor: "hsl(235, 21%, 26%)",
-  accentColor: "hsl(218, 17%, 62%)",
-  secondAccentColor: "hsl(197, 24%, 94%)",
+  accentColor: "hsl(197, 24%, 94%)",
   navigationColor: "#EF233C",
 };

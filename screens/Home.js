@@ -45,14 +45,18 @@ export default function Home({ navigation }) {
         style={{ flex: 1 }}
       >
         <Text
-          style={{ fontSize: 32, fontFamily: "roboto-thin", color: theme.secondAccentColor }}
+          style={{
+            fontSize: 32,
+            fontFamily: "roboto-thin",
+            color: theme.accentColor,
+          }}
         >
           {item.name}
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => dispatch(deleteLoadout(item.id))}>
-        <FontAwesome name="times" size={24} color={theme.secondAccentColor} />
+        <FontAwesome name="times" size={24} color={theme.accentColor} />
       </TouchableOpacity>
     </View>
   );
@@ -72,7 +76,7 @@ export default function Home({ navigation }) {
             justifyContent: "center",
             width: 60,
 
-            backgroundColor: theme.secondAccentColor,
+            backgroundColor: theme.accentColor,
           }}
           onPress={() => {
             dispatch(createLoadout({ name: loadoutName }));

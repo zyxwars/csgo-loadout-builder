@@ -16,12 +16,12 @@ export default function CustomTextInput({
 
         fontFamily: "roboto-thin",
         fontSize: 16,
-        color: theme.secondAccentColor,
+        color: theme.accentColor,
         backgroundColor: theme.secondBackgroundColor,
         ...style,
       }}
       placeholder={placeholder}
-      placeholderTextColor={theme.secondAccentColor}
+      placeholderTextColor={theme.accentColor}
       onChangeText={onChangeText}
       value={value}
     />
