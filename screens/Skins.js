@@ -110,14 +110,14 @@ export default function Skins({ route, navigation }) {
                     dispatch(
                       addSkin({
                         ...item,
+                        ...(item.weapon_type === "Knife" && {
+                          gun_type: weaponType,
+                        }),
                         ...(item.type === "Gloves" && {
                           weapon_type: "Gloves",
                           gun_type: weaponType,
                         }),
-                        ...(item.weapon_type === "Knife" && {
-                          gun_type: weaponType,
-                        }),
-                        ...(item.weapon_type == null && {
+                        ...(item.type == null && {
                           weapon_type: "Agent",
                           gun_type: weaponType,
                         }),
