@@ -32,7 +32,13 @@ export const loadoutsSlice = createSlice({
       AsyncStorage.setItem("loadouts", JSON.stringify(state.loadouts));
       AsyncStorage.setItem(id, JSON.stringify(loadoutModel));
     },
+    updateLoadout(state, { payload }) {
+      state.loadouts = state.loadouts.map((loadout) =>
+        loadout.id === payload.id ? payload : loadout
+      );
 
+      AsyncStorage.setItem("loadouts", JSON.stringify(state.loadouts));
+    },
     deleteLoadout(state, { payload }) {
       //https://stackoverflow.com/questions/67436949/removing-a-value-from-an-array-using-redux-toolkit
       state.loadouts = state.loadouts.filter(
@@ -53,6 +59,7 @@ export const loadoutsSlice = createSlice({
   },
 });
 
-export const { createLoadout, deleteLoadout } = loadoutsSlice.actions;
+export const { createLoadout, updateLoadout, deleteLoadout } =
+  loadoutsSlice.actions;
 
 export default loadoutsSlice.reducer;

@@ -1,3 +1,5 @@
+import { validatePrice } from "./validators";
+
 export const orderByExterior = (skins) => {
   const getExteriorValue = (skinName) => {
     if (skinName.includes("Factory New")) return 0;
@@ -35,4 +37,13 @@ export const orderByExterior = (skins) => {
   );
 
   return [...normalSkins, ...statTrakSkins, ...souvenirSkins];
+};
+
+export const orderByPrice = (skins, ascending = true) => {
+  if (ascending)
+    return skins.sort(
+      (a, b) => validatePrice(a.price) > validatePrice(b.price)
+    );
+
+  return skins.sort((a, b) => validatePrice(a.price) < validatePrice(b.price));
 };

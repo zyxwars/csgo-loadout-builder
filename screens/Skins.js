@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSkins } from "../redux/skinsSlice";
 import { addSkin } from "../redux/loadoutDetailSlice";
 import { stripName } from "../utils/validators";
-import { orderByExterior } from "../utils/helpers";
+import { orderByExterior, orderByPrice } from "../utils/helpers";
 import CustomTextInput from "../components/CustomTextInput";
 import SkinTile from "../components/SkinTile";
 import SkinRow from "../components/SkinRow";
@@ -66,9 +66,9 @@ export default function Skins({ route, navigation }) {
       const cleanedName = stripName(skin.name);
 
       search: {
-        for (banana of groupedSkins) {
-          if (banana.name === cleanedName) {
-            banana.skins.push(skin);
+        for (const skinGroup of groupedSkins) {
+          if (skinGroup.name === cleanedName) {
+            skinGroup.skins.push(skin);
             break search;
           }
         }
@@ -96,9 +96,16 @@ export default function Skins({ route, navigation }) {
 
       {skins.status === "fulfilled" && groupedSkins ? (
         <FlatList
-          data={groupedSkins.filter((milk) =>
-            milk.name.toLowerCase().includes(searchFilter.toLowerCase())
-          )}
+          data={groupedSkins.reduce((filteredGroupedSkins, skinGroup) => {
+            filteredGroupedSkins.push({
+              name: skinGroup.name,
+              skins: skinGroup.skins.filter((skin) =>
+                skin.name.toLowerCase().includes(searchFilter.toLowerCase())
+              ),
+            });
+
+            return filteredGroupedSkins;
+          }, [])}
           renderItem={({ item }) => (
             <SkinRow
               rowName={item.name}

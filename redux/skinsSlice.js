@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchSkins = createAsyncThunk("skins/fetchSkins", async () => {
   const res = await axios
