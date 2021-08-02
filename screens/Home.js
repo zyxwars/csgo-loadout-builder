@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
   Modal,
   TouchableWithoutFeedback,
   Dimensions,
@@ -21,6 +20,9 @@ import {
 } from "../redux/loadoutsSlice";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import globalStyles from "../styles";
+import Line from "../components/Line";
+import Loading from "../components/Loading";
 
 export default function Home({ navigation }) {
   const modalSize = Dimensions.get("window").width - 32;
@@ -39,8 +41,8 @@ export default function Home({ navigation }) {
   const renderItem = ({ item }) => (
     <View
       style={{
-        flexDirection: "row",
         margin: 10,
+        flexDirection: "row",
         alignItems: "center",
 
         backgroundColor: theme.secondBackgroundColor,
@@ -57,9 +59,8 @@ export default function Home({ navigation }) {
       >
         <Text
           style={{
+            ...globalStyles.textThin,
             fontSize: 32,
-            fontFamily: "roboto-thin",
-            color: theme.accentColor,
             paddingLeft: 10,
           }}
         >
@@ -85,7 +86,7 @@ export default function Home({ navigation }) {
           setShowSettings(true);
         }}
       >
-        <FontAwesome name="gear" size={24} color={theme.backgroundColor} />
+        <FontAwesome name="gear" size={32} color={theme.backgroundColor} />
       </TouchableOpacity>
     </View>
   );
@@ -95,19 +96,13 @@ export default function Home({ navigation }) {
       <Modal animationType="slide" transparent={true} visible={showSettings}>
         <View
           style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            ...globalStyles.container,
           }}
         >
           <TouchableWithoutFeedback onPress={() => setShowSettings(false)}>
             <View
               style={{
-                position: "absolute",
-                right: 0,
-                bottom: 0,
-                left: 0,
-                top: 0,
+                ...globalStyles.containerAbsolute,
               }}
             />
           </TouchableWithoutFeedback>
@@ -136,12 +131,9 @@ export default function Home({ navigation }) {
             />
             <View
               style={{
+                ...globalStyles.rowEven,
                 width: modalSize,
                 marginTop: 16,
-
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                alignItems: "center",
               }}
             >
               <CustomButton
@@ -169,23 +161,15 @@ export default function Home({ navigation }) {
 
       <Text
         style={{
+          ...globalStyles.textThin,
           marginTop: 10,
-          textAlign: "center",
-          color: theme.accentColor,
           fontSize: 32,
-          fontFamily: "roboto-thin",
+          textAlign: "center",
         }}
       >
         Create Loadout
       </Text>
-      <View
-        style={{
-          width: "100%",
-          height: 1,
-          marginVertical: 5,
-          backgroundColor: theme.accentColor,
-        }}
-      />
+      <Line />
 
       <View style={{ flexDirection: "row", margin: 10 }}>
         <CustomTextInput
@@ -213,22 +197,14 @@ export default function Home({ navigation }) {
 
       <Text
         style={{
-          textAlign: "center",
-          color: theme.accentColor,
+          ...globalStyles.textThin,
           fontSize: 32,
-          fontFamily: "roboto-thin",
+          textAlign: "center",
         }}
       >
         Loadouts
       </Text>
-      <View
-        style={{
-          width: "100%",
-          height: 1,
-          marginVertical: 5,
-          backgroundColor: theme.accentColor,
-        }}
-      />
+      <Line />
 
       {loadouts.status === "fulfilled" ? (
         <FlatList
@@ -237,16 +213,7 @@ export default function Home({ navigation }) {
           keyExtractor={(item) => item.id}
         />
       ) : (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-
-            backgroundColor: "#151518",
-          }}
-        >
-          <ActivityIndicator size={80} color="black" />
-        </View>
+        <Loading />
       )}
     </View>
   );

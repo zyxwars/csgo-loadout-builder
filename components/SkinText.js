@@ -3,13 +3,13 @@ import { Text } from "react-native";
 
 import { validatePrice } from "../utils/validators";
 import { defaultTheme as theme } from "../theme";
+import globalStyles from "../styles";
 
 export default function SkinText({ style, skin }) {
   return (
     <Text
       style={{
-        color: theme.accentColor,
-        fontFamily: "roboto-light",
+        ...globalStyles.textLight,
         textAlign: "center",
         ...style,
       }}

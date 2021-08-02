@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
+import { View, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -13,6 +13,7 @@ import { defaultTheme as theme } from "../../theme";
 import SkinDetail from "../../components/SkinDetail";
 import SkinRow from "../../components/SkinRow";
 import Weapon from "./Weapon";
+import Loading from "../../components/Loading";
 
 export default function Loadout({ route, navigation }) {
   const dispatch = useDispatch();
@@ -74,9 +75,7 @@ export default function Loadout({ route, navigation }) {
           />
         </>
       ) : (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator size={80} color="black" />
-        </View>
+        <Loading />
       )}
     </View>
   );

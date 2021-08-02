@@ -10,6 +10,7 @@ import { defaultTheme as theme } from "../theme";
 import CustomButton from "./CustomButton";
 import SkinImage from "./SkinImage";
 import SkinText from "./SkinText";
+import globalStyles from "../styles";
 
 export default function SkinDetail({
   skin,
@@ -22,23 +23,9 @@ export default function SkinDetail({
   return (
     <Modal animationType="slide" transparent={true} visible={!!skin}>
       {skin && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={globalStyles.container}>
           <TouchableWithoutFeedback onPress={closeModalCallback}>
-            <View
-              style={{
-                position: "absolute",
-                right: 0,
-                bottom: 0,
-                left: 0,
-                top: 0,
-              }}
-            />
+            <View style={globalStyles.containerAbsolute} />
           </TouchableWithoutFeedback>
           <View
             style={{
@@ -59,12 +46,9 @@ export default function SkinDetail({
             <SkinText style={{ fontSize: 20 }} skin={skin} />
             <View
               style={{
+                ...globalStyles.rowEven,
                 width: detailSize,
                 marginTop: 16,
-
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                alignItems: "center",
               }}
             >
               <CustomButton

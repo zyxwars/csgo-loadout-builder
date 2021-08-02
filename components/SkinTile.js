@@ -32,7 +32,6 @@ export default function SkinTile({ skin, onPress }) {
           right: 0,
           marginHorizontal: 8,
 
-          textAlign: "center",
           fontSize: 12,
         }}
         skin={skin}

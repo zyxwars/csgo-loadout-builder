@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 
 import { defaultTheme as theme } from "../theme";
+import globalStyles from "../styles";
 
 export default function CustomButton({ style, textStyle, text, onPress }) {
   return (
@@ -18,11 +19,9 @@ export default function CustomButton({ style, textStyle, text, onPress }) {
     >
       <Text
         style={{
+          ...globalStyles.textLight,
           textAlign: "center",
-          color: theme.accentColor,
-          fontFamily: "roboto-light",
           fontSize: 16,
-
           ...textStyle,
         }}
       >

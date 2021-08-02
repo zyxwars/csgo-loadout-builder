@@ -6,6 +6,14 @@ export const validatePrice = (price) => {
   return 0;
 };
 
+export const validateQuantitySold = (price) => {
+  if (price?.["24_hours"]?.average) return price["24_hours"].sold;
+  if (price?.["30_days"]?.average) return price["30_days"].sold;
+  if (price?.["all_time"]?.average) return price["all_time"].sold;
+
+  return 0;
+};
+
 export const stripName = (name) => {
   // Remove space from Souvenir and StatTrak
   return name
