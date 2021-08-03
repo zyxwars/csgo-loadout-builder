@@ -83,7 +83,7 @@ export const loadoutModel = [
 ];
 
 const initialState = {
-  status: "fulfilled",
+  status: "pending",
   id: null,
   price: 0,
   skinDetail: null,

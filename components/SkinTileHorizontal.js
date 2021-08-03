@@ -1,14 +1,14 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 import SkinImage from "./SkinImage";
 import SkinText from "./SkinText";
 import { defaultTheme as theme } from "../theme";
 import { validateQuantitySold } from "../utils/validators";
 
-export default function SkinRowTile({ skin }) {
+export default function SkinTileHorizontal({ skin, onPress }) {
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         margin: 8,
@@ -19,6 +19,7 @@ export default function SkinRowTile({ skin }) {
         borderWidth: 2,
         borderColor: `#${skin.rarity_color}`,
       }}
+      onPress={onPress}
     >
       <SkinImage style={{ width: 150, height: 100 }} iconUrl={skin.icon_url} />
       <View
@@ -33,6 +34,6 @@ export default function SkinRowTile({ skin }) {
           (Quantity sold: {validateQuantitySold(skin.price)})
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

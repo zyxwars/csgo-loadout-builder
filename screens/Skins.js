@@ -20,7 +20,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import SkinRowTile from "../components/SkinRowTile";
+import SkinTileHorizontal from "../components/SkinTileHorizontal";
 
 export default function Skins({ route, navigation }) {
   const dispatch = useDispatch();
@@ -49,6 +49,26 @@ export default function Skins({ route, navigation }) {
             : orderStatesIndexed.indexOf(order) + 1
         ]
     );
+  };
+
+  const dispatchAddSkin = (item) => {
+    dispatch(
+      addSkin({
+        ...item,
+        ...(item.weapon_type === "Knife" && {
+          gun_type: weaponType,
+        }),
+        ...(item.type === "Gloves" && {
+          weapon_type: "Gloves",
+          gun_type: weaponType,
+        }),
+        ...(item.type == null && {
+          weapon_type: "Agent",
+          gun_type: weaponType,
+        }),
+      })
+    );
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -245,28 +265,7 @@ export default function Skins({ route, navigation }) {
                 rowName={item.name}
                 childrenData={orderByExterior(item.skins, orderAscending)}
                 childRenderItem={({ item }) => (
-                  <SkinTile
-                    skin={item}
-                    onPress={() => {
-                      dispatch(
-                        addSkin({
-                          ...item,
-                          ...(item.weapon_type === "Knife" && {
-                            gun_type: weaponType,
-                          }),
-                          ...(item.type === "Gloves" && {
-                            weapon_type: "Gloves",
-                            gun_type: weaponType,
-                          }),
-                          ...(item.type == null && {
-                            weapon_type: "Agent",
-                            gun_type: weaponType,
-                          }),
-                        })
-                      );
-                      navigation.goBack();
-                    }}
-                  />
+                  <SkinTile skin={item} onPress={() => dispatchAddSkin(item)} />
                 )}
               />
             )}
@@ -277,7 +276,12 @@ export default function Skins({ route, navigation }) {
             data={orderByPrice(filteredSkins, orderAscending).filter((skin) =>
               skin.name.toLowerCase().includes(searchFilter.toLowerCase())
             )}
-            renderItem={({ item }) => <SkinRowTile skin={item} />}
+            renderItem={({ item }) => (
+              <SkinTileHorizontal
+                skin={item}
+                onPress={() => dispatchAddSkin(item)}
+              />
+            )}
             keyExtractor={(item) => item.name}
           />
         ) : order === orderStates.SOLD ? (
@@ -286,7 +290,12 @@ export default function Skins({ route, navigation }) {
               (skin) =>
                 skin.name.toLowerCase().includes(searchFilter.toLowerCase())
             )}
-            renderItem={({ item }) => <SkinRowTile skin={item} />}
+            renderItem={({ item }) => (
+              <SkinTileHorizontal
+                skin={item}
+                onPress={() => dispatchAddSkin(item)}
+              />
+            )}
             keyExtractor={(item) => item.name}
           />
         ) : (
@@ -294,7 +303,12 @@ export default function Skins({ route, navigation }) {
             data={orderByRarity(filteredSkins, orderAscending).filter((skin) =>
               skin.name.toLowerCase().includes(searchFilter.toLowerCase())
             )}
-            renderItem={({ item }) => <SkinRowTile skin={item} />}
+            renderItem={({ item }) => (
+              <SkinTileHorizontal
+                skin={item}
+                onPress={() => dispatchAddSkin(item)}
+              />
+            )}
             keyExtractor={(item) => item.name}
           />
         )

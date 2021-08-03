@@ -14,7 +14,7 @@ export const fetchSkins = createAsyncThunk("skins/fetchSkins", async () => {
 });
 
 const initialState = {
-  status: "fulfilled",
+  status: "pending",
   skins: [],
 };
 
