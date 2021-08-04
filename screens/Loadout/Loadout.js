@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -20,9 +20,15 @@ export default function Loadout({ route, navigation }) {
 
   const { idLoadout, loadoutName } = route.params;
   const loadout = useSelector((state) => state.loadout);
+  const skins = useSelector((state) => state.skins);
 
   useEffect(() => {
-    dispatch(fetchLoadout(idLoadout));
+    while (true) {
+      if (skins.status === "fulfilled") {
+        dispatch(fetchLoadout({ idLoadout, skins: skins.skins }));
+        break;
+      }
+    }
   }, [idLoadout]);
 
   useEffect(() => {

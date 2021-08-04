@@ -8,9 +8,7 @@ export const fetchSkins = createAsyncThunk("skins/fetchSkins", async () => {
       console.log(err);
     });
 
-  const itemsList = Object.values(res.data["items_list"]);
-
-  return itemsList;
+  return res.data["items_list"];
 });
 
 const initialState = {

@@ -13,6 +13,7 @@ import { store } from "./redux/store";
 import Home from "./screens/Home";
 import Loadout from "./screens/Loadout/Loadout";
 import Skins from "./screens/Skins";
+import Test from "./Test";
 import { defaultTheme as theme } from "./theme";
 
 const getFonts = () =>
@@ -44,6 +45,7 @@ export default function App() {
               headerTitleAlign: "center",
             }}
           >
+            <Stack.Screen name="Test" component={Test} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Loadout" component={Loadout} />
             <Stack.Screen name="Skins" component={Skins} />

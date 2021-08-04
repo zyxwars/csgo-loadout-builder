@@ -7,77 +7,77 @@ export const loadoutModel = [
   {
     name: "Pistol",
     weapons: [
-      { name: "Glock-18", skin: null },
-      { name: "USP-S", skin: null },
-      { name: "P2000", skin: null },
-      { name: "Dual Berettas", skin: null },
-      { name: "P250", skin: null },
-      { name: "Five-SeveN", skin: null },
-      { name: "Tec-9", skin: null },
-      { name: "CZ75-Auto", skin: null },
-      { name: "Desert Eagle", skin: null },
-      { name: "R8 Revolver", skin: null },
+      { name: "Glock-18", skinName: null, skin: null },
+      { name: "USP-S", skinName: null, skin: null },
+      { name: "P2000", skinName: null, skin: null },
+      { name: "Dual Berettas", skinName: null, skin: null },
+      { name: "P250", skinName: null, skin: null },
+      { name: "Five-SeveN", skinName: null, skin: null },
+      { name: "Tec-9", skinName: null, skin: null },
+      { name: "CZ75-Auto", skinName: null, skin: null },
+      { name: "Desert Eagle", skinName: null, skin: null },
+      { name: "R8 Revolver", skinName: null, skin: null },
     ],
   },
   {
     name: "SMG",
     weapons: [
-      { name: "MAC-10", skin: null },
-      { name: "MP9", skin: null },
-      { name: "MP7", skin: null },
-      { name: "MP5-SD", skin: null },
-      { name: "UMP-45", skin: null },
-      { name: "P90", skin: null },
-      { name: "PP-Bizon", skin: null },
+      { name: "MAC-10", skinName: null, skin: null },
+      { name: "MP9", skinName: null, skin: null },
+      { name: "MP7", skinName: null, skin: null },
+      { name: "MP5-SD", skinName: null, skin: null },
+      { name: "UMP-45", skinName: null, skin: null },
+      { name: "P90", skinName: null, skin: null },
+      { name: "PP-Bizon", skinName: null, skin: null },
     ],
   },
 
   {
     name: "Rifle",
     weapons: [
-      { name: "Galil AR", skin: null },
-      { name: "FAMAS", skin: null },
-      { name: "SSG 08", skin: null },
-      { name: "AK-47", skin: null },
-      { name: "M4A4", skin: null },
-      { name: "M4A1-S", skin: null },
-      { name: "SG 553", skin: null },
-      { name: "AUG", skin: null },
-      { name: "AWP", skin: null },
-      { name: "G3SG1", skin: null },
-      { name: "SCAR-20", skin: null },
+      { name: "Galil AR", skinName: null, skin: null },
+      { name: "FAMAS", skinName: null, skin: null },
+      { name: "SSG 08", skinName: null, skin: null },
+      { name: "AK-47", skinName: null, skin: null },
+      { name: "M4A4", skinName: null, skin: null },
+      { name: "M4A1-S", skinName: null, skin: null },
+      { name: "SG 553", skinName: null, skin: null },
+      { name: "AUG", skinName: null, skin: null },
+      { name: "AWP", skinName: null, skin: null },
+      { name: "G3SG1", skinName: null, skin: null },
+      { name: "SCAR-20", skinName: null, skin: null },
     ],
   },
   {
     name: "Heavy",
     weapons: [
-      { name: "Nova", skin: null },
-      { name: "XM1014", skin: null },
-      { name: "Sawed-Off", skin: null },
-      { name: "MAG-7", skin: null },
-      { name: "M249", skin: null },
-      { name: "Negev", skin: null },
+      { name: "Nova", skinName: null, skin: null },
+      { name: "XM1014", skinName: null, skin: null },
+      { name: "Sawed-Off", skinName: null, skin: null },
+      { name: "MAG-7", skinName: null, skin: null },
+      { name: "M249", skinName: null, skin: null },
+      { name: "Negev", skinName: null, skin: null },
     ],
   },
   {
     name: "Knife",
     weapons: [
-      { name: "Terrorist knife", skin: null },
-      { name: "Counter-terrorist knife", skin: null },
+      { name: "Terrorist knife", skinName: null, skin: null },
+      { name: "Counter-terrorist knife", skinName: null, skin: null },
     ],
   },
   {
     name: "Gloves",
     weapons: [
-      { name: "Terrorist gloves", skin: null },
-      { name: "Counter-terrorist gloves", skin: null },
+      { name: "Terrorist gloves", skinName: null, skin: null },
+      { name: "Counter-terrorist gloves", skinName: null, skin: null },
     ],
   },
   {
     name: "Agent",
     weapons: [
-      { name: "Terrorist agent", skin: null },
-      { name: "Counter-terrorist agent", skin: null },
+      { name: "Terrorist agent", skinName: null, skin: null },
+      { name: "Counter-terrorist agent", skinName: null, skin: null },
     ],
   },
 ];
@@ -92,12 +92,27 @@ const initialState = {
 
 export const fetchLoadout = createAsyncThunk(
   "loadout/fetchLoadout",
-  async (idLoadout) => {
+  async ({ idLoadout, skins }) => {
     const loadout = await AsyncStorage.getItem(idLoadout);
 
     if (!loadout) return { id: idLoadout, types: loadoutModel };
 
-    return { id: idLoadout, types: JSON.parse(loadout) };
+    const parsedTypes = JSON.parse(loadout);
+
+    return {
+      id: idLoadout,
+      types: await parsedTypes.reduce((acc, type) => {
+        return [
+          ...acc,
+          {
+            ...type,
+            weapons: type.weapons.reduce((acc, weapon) => {
+              return [...acc, { ...weapon, skin: skins[weapon.skinName] }];
+            }, []),
+          },
+        ];
+      }, []),
+    };
   }
 );
 
@@ -120,10 +135,10 @@ export const loadoutDetailSlice = createSlice({
       state.types = state.types.map((type) =>
         type.name === skin.weapon_type
           ? {
-              name: type.name,
+              ...type,
               weapons: type.weapons.map((weapon) =>
                 weapon.name === skin.gun_type
-                  ? { name: skin.gun_type, skin }
+                  ? { ...weapon, skinName: skin.name, skin }
                   : weapon
               ),
             }

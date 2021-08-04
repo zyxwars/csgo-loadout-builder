@@ -78,7 +78,7 @@ export default function Skins({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    const filteredSkins = skins.skins.filter((skin) => {
+    const filteredSkins = Object.values(skins.skins).filter((skin) => {
       if (
         weaponType === "Terrorist gloves" ||
         weaponType === "Counter-terrorist gloves"
@@ -219,6 +219,7 @@ export default function Skins({ route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setOrderAscending((orderAscending) => !orderAscending)}
+          style={{ justifyContent: "center" }}
         >
           {orderAscending ? (
             <AntDesign name="up" size={24} color={theme.accentColor} />

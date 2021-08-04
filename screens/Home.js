@@ -18,6 +18,7 @@ import {
   deleteLoadout,
   fetchLoadouts,
 } from "../redux/loadoutsSlice";
+import { fetchSkins } from "../redux/skinsSlice";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
 import globalStyles from "../styles";
@@ -29,6 +30,8 @@ export default function Home({ navigation }) {
   const dispatch = useDispatch();
 
   const loadouts = useSelector((state) => state.loadouts);
+  const skins = useSelector((state) => state.skins);
+
   const [loadoutName, setLoadoutName] = useState("");
   const initialLoadoutState = { id: "", name: "" };
   const [updatedLoadout, setUpdatedLoadout] = useState(initialLoadoutState);
@@ -36,6 +39,9 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     dispatch(fetchLoadouts());
+
+    if (skins.skins.length > 0) return;
+    dispatch(fetchSkins());
   }, []);
 
   const renderItem = ({ item }) => (
