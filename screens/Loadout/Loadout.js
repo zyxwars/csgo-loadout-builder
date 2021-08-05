@@ -36,6 +36,7 @@ export default function Loadout({ route, navigation }) {
       navigation.setOptions({ title: "Loading..." });
       return;
     }
+
     dispatch(calculatePrice());
     navigation.setOptions({
       title: `${loadoutName} - ${loadout.price.toFixed(2)}€`,

@@ -22,8 +22,8 @@ export const skinsSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchSkins.fulfilled]: (state, { payload }) => {
-      state.status = "fulfilled";
       state.skins = payload;
+      state.status = "fulfilled";
     },
     [fetchSkins.pending]: (state) => {
       state.status = "pending";
