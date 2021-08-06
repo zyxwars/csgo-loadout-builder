@@ -212,7 +212,7 @@ export default function Home({ navigation }) {
       </Text>
       <Line />
 
-      {loadouts.status === "fulfilled" ? (
+      {loadouts.status === "fulfilled" && skins.status === "fulfilled" ? (
         <FlatList
           data={loadouts.loadouts}
           renderItem={renderItem}

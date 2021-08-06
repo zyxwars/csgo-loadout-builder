@@ -9,7 +9,7 @@ export const fetchLoadouts = createAsyncThunk(
   async () => {
     const loadouts = await AsyncStorage.getItem("loadouts");
 
-    if (!loadouts) return [];
+    if (!loadouts) return initialState.loadouts;
 
     return JSON.parse(loadouts);
   }
