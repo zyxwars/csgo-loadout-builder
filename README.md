@@ -1,3 +1,3 @@
 # csgo-loadout-builder
 
-<img src="./example.png"/>
+<img src="./example.jpg">
